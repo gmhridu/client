@@ -24,13 +24,22 @@ const Navbar = () => {
         <img src={logo} alt="logo" className="h-12 w-12" />
         <a className="text-xl font-bold space-x-1">NourishHub</a>
       </Link>
-      <div>
+      <div className="hidden md:block">
         <ul className="menu menu-horizontal px-1">
           <li>
             <Link to={"/"}>Home</Link>
           </li>
           <li>
-            <Link to={"/jobs"}>All Jobs</Link>
+            <Link to={"/jobs"}>About</Link>
+          </li>
+          <li>
+            <Link to={"/jobs"}>Contact Us</Link>
+          </li>
+          <li>
+            <Link to={"/jobs"}>My Foods</Link>
+          </li>
+          <li>
+            <Link to={"/jobs"}>My Food Request</Link>
           </li>
         </ul>
       </div>
@@ -38,7 +47,8 @@ const Navbar = () => {
         <div>
           <ul>
             <li>
-              <Link to={"/login"}>Login</Link>
+              <Link to={"/login"}>Login</Link>{" "}
+               / <Link to={'/register'}>Register</Link>
             </li>
           </ul>
         </div>

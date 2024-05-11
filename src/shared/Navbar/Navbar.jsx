@@ -1,22 +1,30 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import logo from '/logo.jpeg'
+import { Link, NavLink } from "react-router-dom";
+import logo from "/logo.jpeg";
+import useAuth from "../../hooks/useAuth";
+import toast from "react-hot-toast";
 
 const Navbar = () => {
-  const [dropdown, setDropDown] = useState(false)
-  
+  const [dropdown, setDropDown] = useState(false);
+  const { user, logOut } = useAuth();
+
   const toggleDropDown = () => {
-    setDropDown((isOpen)=> !isOpen)
-  }
+    setDropDown((isOpen) => !isOpen);
+  };
 
   const closeDropdown = () => {
-    setDropDown(false)
-  }
+    setDropDown(false);
+  };
 
-  const handleLinkClick = (e) => {
-    e.preventDefault()
-    closeDropdown()
-  }
+  const handleLinkClick = () => {
+    closeDropdown();
+  };
+
+  const handleLogOut = () => {
+    logOut();
+    toast.success("Logged out successfully");
+    setDropDown(false); // Reset dropdown state after logout
+  };
 
   return (
     <div className="navbar bg-base-100 flex justify-between items-center">
@@ -25,74 +33,111 @@ const Navbar = () => {
         <a className="text-xl font-bold space-x-1">NourishHub</a>
       </Link>
       <div className="hidden md:block">
-        <ul className="menu menu-horizontal px-1">
-          <li>
-            <Link to={"/"}>Home</Link>
-          </li>
-          <li>
-            <Link to={"/jobs"}>About</Link>
-          </li>
-          <li>
-            <Link to={"/jobs"}>Contact Us</Link>
-          </li>
-          <li>
-            <Link to={"/jobs"}>My Foods</Link>
-          </li>
-          <li>
-            <Link to={"/jobs"}>My Food Request</Link>
-          </li>
+        <ul className="menu menu-horizontal px-1 text-lg font-semibold flex space-x-6">
+          <NavLink
+            className={({ isActive }) => (isActive ? "text-blue-400" : "")}
+            to={"/"}
+          >
+            Home
+          </NavLink>
+          {user && (
+            <NavLink
+              className={({ isActive }) => (isActive ? "text-blue-400" : "")}
+              to={"/my-foods"}
+            >
+              My Foods
+            </NavLink>
+          )}
+
+          {user && (
+            <NavLink
+              className={({ isActive }) => (isActive ? "text-blue-400" : "")}
+              to={"/my-food-request"}
+            >
+              My Food Request
+            </NavLink>
+          )}
+          <NavLink
+            className={({ isActive }) => (isActive ? "text-blue-400" : "")}
+            to={"/about"}
+          >
+            About
+          </NavLink>
+          <NavLink
+            className={({ isActive }) => (isActive ? "text-blue-400" : "")}
+            to={"/contact"}
+          >
+            Contact Us
+          </NavLink>
         </ul>
       </div>
       <div className="flex-none gap-x-2">
-        <div>
+        {!user && (
           <ul>
-            <li>
-              <Link to={"/login"}>Login</Link>{" "}
-               / <Link to={'/register'}>Register</Link>
-            </li>
+            <button className="btn btn-outline border-blue-400 hover:bg-blue-400 hover:text-white hover:border-none text-lg font-semibold">
+              <NavLink
+                className={({ isActive }) =>
+                  isActive ? "text-blue-400 underline" : ""
+                }
+                to={"/login"}
+              >
+                Login
+              </NavLink>
+            </button>
           </ul>
-        </div>
-        <div className="dropdown dropdown-end z-50">
-          <div
-            tabIndex={0}
-            className="mt-3 z-[1] card card-compact dropdown-content w-52 bg-base-100 shadow"
-          ></div>
-        </div>
-        <div className="dropdown dropdown-end">
-          <div
-            onClick={toggleDropDown}
-            tabIndex={0}
-            role="button"
-            className="btn btn-ghost btn-circle avatar"
-          >
-            <div className="w-10 rounded-full">
-              <img
-                alt="Tailwind CSS Navbar component"
-                src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
-              />
-            </div>
-          </div>
-          {dropdown && (
-            <ul
-              onClick={handleLinkClick}
+        )}
+        {user && (
+          <div className="dropdown dropdown-end z-50">
+            <div
+              onClick={toggleDropDown}
               tabIndex={0}
-              className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
+              role="button"
+              className="btn btn-ghost btn-circle avatar"
             >
-              <li>
-                <Link to={"/profile"} className="justify-between">
-                  Profile
-                  <span className="badge">New</span>
-                </Link>
-              </li>
-              <li>
-                <Link to={"/setting"}>Settings</Link>
-              </li>
-              <li>
-                <Link to={'/logout'}>Logout</Link>
-              </li>
-            </ul>
-          )}
-        </div>
+              <div title={user?.displayName} className="w-10 rounded-full">
+                <img
+                  referrerPolicy="no-referrer"
+                  alt="User Profile Photo"
+                  src={user?.photoURL}
+                />
+              </div>
+            </div>
+            {dropdown && (
+              <ul
+                tabIndex={0}
+                className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
+              >
+                <li>
+                  <Link
+                    to={"/add-food"}
+                    onClick={handleLinkClick}
+                    className="justify-between"
+                  >
+                    Add Food
+                  </Link>
+                </li>
+                <li>
+                  <Link to={"/my-foods"} onClick={handleLinkClick}>
+                    My Foods
+                  </Link>
+                </li>
+                <li>
+                  <Link to={"/my-food-request"} onClick={handleLinkClick}>
+                    My Food Request
+                  </Link>
+                </li>
+                <li className="mt-2">
+                  <button
+                    onClick={handleLogOut}
+                    className="bg-gray-200 block text-center"
+                  >
+                    Logout
+                  </button>
+                </li>
+              </ul>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );

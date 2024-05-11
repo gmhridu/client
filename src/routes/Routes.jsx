@@ -6,6 +6,7 @@ import Error from "../pages/Error/Error";
 import Login from "../pages/Authentication/Login";
 import Register from "../pages/Authentication/Register";
 import AddFood from "../pages/AddFood/AddFood";
+import FoodDetails from "../components/FoodDetails/FoodDetails";
 
 const router = createBrowserRouter([
   {
@@ -31,6 +32,12 @@ const router = createBrowserRouter([
       {
         path: "/add-food",
         element: <AddFood/>,
+      },
+      {
+        path: '/food/:id',
+        element: <FoodDetails />,
+        loader: ({ params }) =>
+           fetch(`${import.meta.env.VITE_API_URL}/foods/${params.id}`),
       },
       {
         path: '/login',

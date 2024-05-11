@@ -20,17 +20,18 @@ const FoodSection = () => {
        <h2 className="text-2xl font-bold text-center mb-6">Food Assistance</h2>
        <p className="text-lg text-center text-gray-600 mb-8">
          Don't be shy to ask for food assistance. Your well-being matters to us.
-     Browse through
-     <br />
-     the available food options
-     below, and feel free to
-         request what you need.
+         Browse through
+         <br />
+         the available food options below, and feel free to request what you
+         need.
        </p>
-   </div>
-   
-   <div className='my-8'>
-    {foods?.map((food) => <FoodCard key={food?._id} food={food} />)}
-   </div>
+     </div>
+
+     <div className="my-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 items-center justify-center px-2">
+       {foods?.map((food) => (
+         <FoodCard key={food?._id} food={food} />
+       ))}
+     </div>
    </div>
  );
 };

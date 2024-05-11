@@ -49,6 +49,7 @@ const Login = () => {
       console.log(err.message)
     }
   }
+  if(user || loading) return
   return (
     <section className="dark:bg-gray-900 my-20">
       <div className="flex items-center justify-center container mx-auto">

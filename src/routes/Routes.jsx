@@ -5,6 +5,7 @@ import Root from "../layouts/Root";
 import Error from "../pages/Error/Error";
 import Login from "../pages/Authentication/Login";
 import Register from "../pages/Authentication/Register";
+import AddFood from "../pages/AddFood/AddFood";
 
 const router = createBrowserRouter([
   {
@@ -29,7 +30,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/add-food",
-        element: <h1>Add Food</h1>,
+        element: <AddFood/>,
       },
       {
         path: '/login',

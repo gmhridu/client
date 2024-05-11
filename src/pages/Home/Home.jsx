@@ -1,8 +1,16 @@
 import React from 'react'
+import Banner from './Banner'
+import MeetOurPatner from './MeetOurPatner'
+import FoodSection from './FoodSection'
+import AddFood from '../AddFood/AddFood'
 
 const Home = () => {
   return (
-    <div>Home</div>
+    <div>
+      <Banner />
+      <MeetOurPatner />
+      <FoodSection />
+    </div>
   )
 }
 

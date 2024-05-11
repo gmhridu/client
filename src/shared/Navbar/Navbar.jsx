@@ -27,7 +27,7 @@ const Navbar = () => {
   };
 
   return (
-    <div className="navbar bg-base-100 flex justify-between items-center">
+    <div className="navbar bg-base-100 flex justify-between items-center px-2 md:px-6 py-2">
       <Link to={"/"} className="flex items-center justify-center gap-1">
         <img src={logo} alt="logo" className="h-12 w-12" />
         <a className="text-xl font-bold space-x-1">NourishHub</a>

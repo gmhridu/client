@@ -34,10 +34,10 @@ const Register = () => {
     try {
       const result = await signInWithGoogle();
       const user = result?.user;
-     //  if (user) {
-     //   setUser(user);
+      if (user) {
+       setUser(user);
        
-     // }
+     }
      toast.success("Account registered successfully");
      navigate("/login");
     } catch (error) {
@@ -77,6 +77,7 @@ const Register = () => {
 
   };
 
+  if (user || loading) return;
   return (
     <section className="dark:bg-gray-900 my-20">
       <div className="flex flex-row-reverse items-center justify-center container mx-auto">

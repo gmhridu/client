@@ -52,7 +52,7 @@ const Navbar = () => {
           {user && (
             <NavLink
               className={({ isActive }) => (isActive ? "text-blue-400" : "")}
-              to={"/my-food-request"}
+              to={"/my-request"}
             >
               My Food Request
             </NavLink>
@@ -122,7 +122,7 @@ const Navbar = () => {
                   </Link>
                 </li>
                 <li>
-                  <Link to={"/my-food-request"} onClick={handleLinkClick}>
+                  <Link to={"/my-request"} onClick={handleLinkClick}>
                     My Food Request
                   </Link>
                 </li>

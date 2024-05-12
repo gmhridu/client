@@ -10,27 +10,24 @@ const FoodFilter = () => {
   const [sort, setSort] = useState("");
   const [filter, setFilter] = useState("");
   const [search, setSearch] = useState("");
-  const [searchText, setSearchText] = useState("")
-  
+  const [searchText, setSearchText] = useState("");
 
-   const isSmallScreen = useMediaQuery({ maxWidth: 767 });
-   const isMediumScreen = useMediaQuery({ minWidth: 768, maxWidth: 1023 });
-   const isLargeScreen = useMediaQuery({ minWidth: 1024, maxWidth: 1279 });
+  const isSmallScreen = useMediaQuery({ maxWidth: 767 });
+  const isMediumScreen = useMediaQuery({ minWidth: 768, maxWidth: 1023 });
+  const isLargeScreen = useMediaQuery({ minWidth: 1024, maxWidth: 1279 });
   const isExtraLargeScreen = useMediaQuery({ minWidth: 1280 });
-  
-   let itemsPerPage = 4; 
 
-   
-   if (isSmallScreen) {
-     itemsPerPage = 2;
-   } else if (isMediumScreen) {
-     itemsPerPage = 2;
-   } else if (isLargeScreen) {
-     itemsPerPage = 3;
-   } else if (isExtraLargeScreen) {
-     itemsPerPage = 8;
-   }
+  let itemsPerPage = 4;
 
+  if (isSmallScreen) {
+    itemsPerPage = 2;
+  } else if (isMediumScreen) {
+    itemsPerPage = 2;
+  } else if (isLargeScreen) {
+    itemsPerPage = 3;
+  } else if (isExtraLargeScreen) {
+    itemsPerPage = 8;
+  }
 
   // Calculate the number of pages
   const numberOfPages = Math.ceil(count / itemsPerPage);
@@ -58,7 +55,9 @@ const FoodFilter = () => {
     const getCount = async () => {
       try {
         const { data } = await axios(
-          `${import.meta.env.VITE_API_URL}/foods/food-count?filter=${filter}&search=${search}`
+          `${
+            import.meta.env.VITE_API_URL
+          }/foods/food-count?filter=${filter}&search=${search}`
         );
         setCount(data?.count);
       } catch (error) {
@@ -76,13 +75,13 @@ const FoodFilter = () => {
     setFilter("");
     setSort("");
     setSearch("");
-    setSearchText('')
+    setSearchText("");
   };
 
-  const handleSearch = e => {
-    e.preventDefault()
-    setSearch(searchText)
-  }
+  const handleSearch = (e) => {
+    e.preventDefault();
+    setSearch(searchText);
+  };
   return (
     <div>
       <div className="container px-6 py-10 mx-auto min-h-[calc(100vh-306px)] flex flex-col justify-between">

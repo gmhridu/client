@@ -23,7 +23,7 @@ const Navbar = () => {
   const handleLogOut = () => {
     logOut();
     toast.success("Logged out successfully");
-    setDropDown(false); // Reset dropdown state after logout
+    setDropDown(false); 
   };
 
   return (
@@ -77,7 +77,7 @@ const Navbar = () => {
             <button className="btn btn-outline border-blue-400 hover:bg-blue-400 hover:text-white hover:border-none text-lg font-semibold">
               <NavLink
                 className={({ isActive }) =>
-                  isActive ? "text-blue-400 underline" : ""
+                  isActive ? "text-blue-400 hover:text-white" : ""
                 }
                 to={"/login"}
               >

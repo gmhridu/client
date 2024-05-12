@@ -21,7 +21,11 @@ const FoodDetails = () => {
    <div className="flex items-center justify-center my-10 px-6">
      <div className="w-full overflow-hidden bg-white rounded-lg shadow-md dark:bg-gray-800">
        <div className="h-96">
-         <img className="object-cover w-full h-full" src={foodImage} alt={foodName} />
+         <img
+           className="object-cover w-full h-full"
+           src={foodImage}
+           alt={foodName}
+         />
        </div>
        <div className="p-6">
          <div>
@@ -37,10 +41,10 @@ const FoodDetails = () => {
              I Built A Successful Blog In One Year
            </a>
            <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
-             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Molestie
-             parturient et sem ipsum volutpat vel. Natoque sem et aliquam mauris
-             egestas quam volutpat viverra. In pretium nec senectus erat. Et
-             malesuada lobortis.
+             Dramatically unleash focused partnerships before cross-unit
+             interfaces. Intrinsically create orthogonal platforms vis-a-vis
+             world-class functionalities. Distinctively emasculated synergistic
+             potentialities through enterprise opportunities. Collaboratively.
            </p>
          </div>
 

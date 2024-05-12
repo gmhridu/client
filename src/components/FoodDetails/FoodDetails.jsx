@@ -21,7 +21,7 @@ const FoodDetails = () => {
    <div className="flex items-center justify-center my-10 px-6">
      <div className="w-full overflow-hidden bg-white rounded-lg shadow-md dark:bg-gray-800">
        <div className="h-96">
-         <img className="object-cover w-full h-full" src={foodImage} alt="Article" />
+         <img className="object-cover w-full h-full" src={foodImage} alt={foodName} />
        </div>
        <div className="p-6">
          <div>

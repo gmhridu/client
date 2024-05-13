@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import useAuth from "../../hooks/useAuth";
 import { Link, useLoaderData, useNavigate } from "react-router-dom";
@@ -7,90 +6,105 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { useQuery } from "@tanstack/react-query";
+import Loader from "../../shared/Loader/Loader";
+import Error from "../../pages/Error/Error";
 
 const FoodDetails = () => {
-   const [startDate, setStartDate] = useState(new Date());
+  const [startDate, setStartDate] = useState(new Date());
   const { user } = useAuth();
   const { id } = useParams();
   const foods = useLoaderData();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
-
- useEffect(() => {
-   const fetchFoodDetails = async () => {
-     try {
-       const response = await axios.get(
-         `${import.meta.env.VITE_API_URL}/foods/${id}`
-       );
-       setFood(response.data);
-     } catch (error) {
-       console.error("Error fetching food details:", error);
-     }
-   };
-
-   fetchFoodDetails();
- }, [id]);
-
- const {
-   _id,
-   foodImage,
-   foodName,
-   foodStatus,
-   requestDate,
-   foodQuantity,
-   createdAt,
-   pickupLocation,
-   expiredDateTime,
-   additionalNotes,
-   donator: { name, image, email } = {}, 
- } = foods || {};
-
-const handleFormSubmit = async (e) => {
-  e.preventDefault();
-  if (!foods || !foods.donator || user?.email === foods.donator?.email) {
-    return toast.error("Action not permitted");
+  const fetchFoodDetails = async () => {
+    const { data } = await axios.get(
+      `${import.meta.env.VITE_API_URL}/foods/${id}`
+    );
+    return data;
   }
 
-  const form = e.target;
-  const foodImage = form.foodImage.value;
-  const foodName = form.foodName.value;
-  const foodStatus = form.foodStatus.value;
-  const requestDate = startDate;
-  const expiredDateTime = startDate;
-  const foodQuantity = form.foodQuantity.value;
-  const pickupLocation = form.pickupLocation.value;
-  const additionalNotes = form.pickupLocation.value;
-  const email = user?.email;
-  const donator_info = foods?.donator;
-  
+  const {
+    data: food = {},
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: ["foods", id],
+    queryFn: fetchFoodDetails,
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
+    refetchOnReconnect: false,
+    refetchOnRevalidate: false,
+    staleTime: 1000 * 60 * 60,
+    cacheTime: 1000 * 60 * 60,
+    retry: 3,
+    retryDelay: 1000,
+    retryOnMount: true,
+    retryOnWindowFocus: true,
+    retryOnReconnect: true,
+    retryOnRevalidate: true,
+  });
 
-  const reqData = {
+  const {
+    _id,
     foodImage,
     foodName,
     foodStatus,
     requestDate,
-    expiredDateTime,
     foodQuantity,
+    createdAt,
     pickupLocation,
+    expiredDateTime,
     additionalNotes,
-    donator: { name, email, image },
-    email,
+    donator: { name, image, email } = {},
+  } = food || {};
+
+  const handleFormSubmit = async (e) => {
+    e.preventDefault();
+    if (user?.email === food.donator?.email) {
+      return toast.error("Action not permitted");
+    }
+
+    const form = e.target;
+    const foodImage = form.foodImage.value;
+    const foodName = form.foodName.value;
+    const foodStatus = form.foodStatus.value;
+    const requestDate = startDate;
+    const expiredDateTime = startDate;
+    const foodQuantity = form.foodQuantity.value;
+    const pickupLocation = form.pickupLocation.value;
+    const additionalNotes = form.additionalNotes.value;
+    const email = user?.email;
+    const donatorEmail = food.donator?.email;
+
+    const reqData = {
+      foodImage,
+      foodName,
+      foodStatus,
+      requestDate,
+      expiredDateTime,
+      foodQuantity,
+      pickupLocation,
+      additionalNotes,
+      email,
+      donatorEmail,
+    };
+
+    try {
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_API_URL}/requests`,
+        reqData
+      );
+      toast.success("Your food request has been submitted successfully!");
+      navigate("/my-requests");
+    } catch (error) {
+      toast.error(error?.message);
+      e.target.reset();
+    }
   };
 
-  try {
-    const { data } = await axios.post(
-      `${import.meta.env.VITE_API_URL}/requests`,
-      reqData
-    );
-    console.log(data);
-    toast.success("Your food request has been submitted successfully!");
-    navigate("/my-request");
-  } catch (error) {
-    toast.error(error?.message);
-    e.target.reset();
-  }
-};
-
+  if (isLoading) return <Loader />;
+  if (isError) return <Error/>;
 
   return (
     <div className="flex flex-col md:flex-row  items-center justify-around my-10 px-6 gap-5 md:max-w-screen-2xl mx-auto">
@@ -291,7 +305,7 @@ const handleFormSubmit = async (e) => {
                 </label>
                 <DatePicker
                   defaultValue={new Date(requestDate).toLocaleDateString()}
-                  className="border p-2 rounded-md"
+                  className="border p-2 rounded-md w-full"
                   selected={startDate}
                   onChange={(date) => setStartDate(date)}
                 />
@@ -314,7 +328,7 @@ const handleFormSubmit = async (e) => {
               </div>
             </div>
 
-            <div className="flex justify-end mt-6">
+            <div className="flex justify-center md:justify-end mt-6">
               <div className="cursor-pointer">
                 <button
                   type="submit"

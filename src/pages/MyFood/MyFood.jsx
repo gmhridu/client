@@ -2,32 +2,46 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import useAuth from "../../hooks/useAuth";
 import { Link } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import Loader from "../../shared/Loader/Loader";
+import Error from "../Error/Error";
 
 const MyFood = () => {
   const { user } = useAuth();
-  const [myFoods, setMyFoods] = useState([]);
-
-  useEffect(() => {
-    if (user) {
-      getMyFood();
-    }
-  }, [user]);
+  
 
   const getMyFood = async () => {
-    try {
-      if (!user) return;
+     if (!user) return;
 
-      const userEmail = user?.email;
+     const userEmail = user?.email;
 
-      const { data } = await axios.get(
-        `${import.meta.env.VITE_API_URL}/foods/my-food/${userEmail}`
-      );
-      setMyFoods(data);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
+     const { data } = await axios.get(
+       `${import.meta.env.VITE_API_URL}/foods/my-food/${userEmail}`
+    );
+    return data;
   };
-
+  const { data: myFoods = [],
+    isLoading,
+    isError,
+   } = useQuery({
+    queryKey: "myFoods",
+    queryFn: getMyFood,
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
+    refetchOnReconnect: false,
+    refetchOnRevalidate: false,
+    staleTime: 1000 * 60 * 60,
+    cacheTime: 1000 * 60 * 60,
+    retry: 3,
+    retryDelay: 1000,
+    retryOnMount: true,
+    retryOnWindowFocus: true,
+    retryOnReconnect: true,
+    retryOnRevalidate: true,
+   })
+  
+  if (isLoading) return <Loader />;
+  if (isError) return <Error />;
   return (
     <div className="my-10">
       <div className="relative overflow-x-auto px-2 md:px-6 sm:rounded-lg">

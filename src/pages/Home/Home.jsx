@@ -2,7 +2,7 @@ import React from 'react'
 import Banner from './Banner'
 import MeetOurPatner from './MeetOurPatner'
 import FoodSection from './FoodSection'
-import AddFood from '../AddFood/AddFood'
+import MeetOutTeam from '../MeetOurTeam/MeetOutTeam'
 
 const Home = () => {
   return (
@@ -10,6 +10,7 @@ const Home = () => {
       <Banner />
       <MeetOurPatner />
       <FoodSection />
+      <MeetOutTeam/>
     </div>
   )
 }

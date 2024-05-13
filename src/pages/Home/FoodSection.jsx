@@ -185,7 +185,7 @@ const FoodFilter = () => {
           </div>
         </div>
 
-        <div className="flex justify-center mt-12">
+        <div className="flex justify-center mt-12 font-sans font-bold">
           {/* previous button */}
           <button
             disabled={currentPage === 1}

@@ -1,4 +1,3 @@
-import React, { useEffect, useState } from "react";
 import axios from "axios";
 import useAuth from "../../hooks/useAuth";
 import { Link } from "react-router-dom";
@@ -8,7 +7,6 @@ import Error from "../Error/Error";
 
 const MyFood = () => {
   const { user } = useAuth();
-  
 
   const getMyFood = async () => {
      if (!user) return;
@@ -25,23 +23,13 @@ const MyFood = () => {
     isError,
    } = useQuery({
     queryKey: "myFoods",
-    queryFn: getMyFood,
-    refetchOnWindowFocus: false,
-    refetchOnMount: false,
-    refetchOnReconnect: false,
-    refetchOnRevalidate: false,
-    staleTime: 1000 * 60 * 60,
-    cacheTime: 1000 * 60 * 60,
-    retry: 3,
-    retryDelay: 1000,
-    retryOnMount: true,
-    retryOnWindowFocus: true,
-    retryOnReconnect: true,
-    retryOnRevalidate: true,
+     queryFn: getMyFood,
+    enabled: !!user,
    })
   
   if (isLoading) return <Loader />;
   if (isError) return <Error />;
+
   return (
     <div className="my-10">
       <div className="relative overflow-x-auto px-2 md:px-6 sm:rounded-lg">

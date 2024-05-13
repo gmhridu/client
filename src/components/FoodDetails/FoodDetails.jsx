@@ -6,15 +6,15 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import Loader from "../../shared/Loader/Loader";
 import Error from "../../pages/Error/Error";
 
 const FoodDetails = () => {
+  const queryClient = useQueryClient()
   const [startDate, setStartDate] = useState(new Date());
   const { user } = useAuth();
   const { id } = useParams();
-  const foods = useLoaderData();
   const navigate = useNavigate();
 
   const fetchFoodDetails = async () => {
@@ -58,6 +58,7 @@ const FoodDetails = () => {
     additionalNotes,
     donator: { name, image, email } = {},
   } = food || {};
+
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();

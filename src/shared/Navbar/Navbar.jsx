@@ -1,5 +1,6 @@
+
 import React, { useState } from "react";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useParams } from "react-router-dom";
 import logo from "/logo.jpeg";
 import useAuth from "../../hooks/useAuth";
 import toast from "react-hot-toast";
@@ -23,7 +24,7 @@ const Navbar = () => {
   const handleLogOut = () => {
     logOut();
     toast.success("Logged out successfully");
-    setDropDown(false); 
+    setDropDown(false);
   };
 
   return (
@@ -52,7 +53,7 @@ const Navbar = () => {
           {user && (
             <NavLink
               className={({ isActive }) => (isActive ? "text-blue-400" : "")}
-              to={"/my-request"}
+              to={`/my-requests`}
             >
               My Food Request
             </NavLink>
@@ -122,7 +123,7 @@ const Navbar = () => {
                   </Link>
                 </li>
                 <li>
-                  <Link to={"/my-request"} onClick={handleLinkClick}>
+                  <Link to={`/my-requests`} onClick={handleLinkClick}>
                     My Food Request
                   </Link>
                 </li>

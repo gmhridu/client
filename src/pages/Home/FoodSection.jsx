@@ -29,10 +29,10 @@ const FoodFilter = () => {
     itemsPerPage = 8;
   }
 
-  // Calculate the number of pages
+
   const numberOfPages = Math.ceil(count / itemsPerPage);
 
-  // Generate array of page numbers
+
   const pages = [...Array(numberOfPages).keys()].map((ele) => ele + 1);
 
   useEffect(() => {

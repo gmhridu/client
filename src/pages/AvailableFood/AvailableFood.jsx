@@ -37,16 +37,10 @@ const AvailableFood = () => {
 
   const handleRequestFood = async (foodId, requestedQuantity) => {
     try {
-      console.log("Food ID:", foodId);
-      console.log("Requested Quantity:", requestedQuantity);
-
       if (!Number.isInteger(requestedQuantity) || requestedQuantity <= 0) {
         throw new Error("Invalid requested quantity");
       }
-
       await requestFoodMutation.mutateAsync({ foodId, requestedQuantity });
-
-      console.log("Food request submitted successfully!");
       queryClient.invalidateQueries("availableFoods");
     } catch (error) {
       console.error("Error handling food request:", error.message);

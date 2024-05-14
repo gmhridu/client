@@ -72,7 +72,6 @@ const FoodDetails = () => {
       return data;
     },
     onSuccess: () => {
-      toast.success("Your food request has been submitted successfully!");
       navigate('/my-requests')
     },
     onError: () => {

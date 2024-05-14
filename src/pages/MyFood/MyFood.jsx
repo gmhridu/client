@@ -61,18 +61,19 @@ const MyFood = () => {
           </thead>
           <tbody>
             {myFoods?.length === 0 ? (
-              <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                <td
-                  scope="row"
-                  className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white text-center"
-                >
-                  You Don't have added any food yet! To Add Food{" "}
-          <span className="hover:text-blue-400 
-                  underline">
-                    <Link to={"/add-food"}>Click Here</Link>
-                  </span>
-                </td>
-              </tr>
+              <div className="my-6 min-h-[calc(100vh-300px)]">
+                <tr className="flex items-center justify-center bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                  <td
+                    colSpan="7"
+                    className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white text-center"
+                  >
+                    You Don't have added any food yet! To Add Food{" "}
+                    <span className="hover:text-blue-400 underline">
+                      <Link to={"/add-food"}>Click Here</Link>
+                    </span>
+                  </td>
+                </tr>
+              </div>
             ) : (
               myFoods?.map((food) => (
                 <tr

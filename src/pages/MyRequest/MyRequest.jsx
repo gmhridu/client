@@ -28,7 +28,7 @@ const MyRequest = () => {
   console.log(myReq);
 
   return (
-    <div className="my-10">
+    <div className="my-10 min-h-[calc(100vh-320px)]">
       <div className="relative overflow-x-auto px-2 md:px-6 sm:rounded-lg">
         <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 border shadow-md">
           <thead className="text-xs text-gray-700 uppercase bg-gray-200 dark:bg-gray-700 dark:text-gray-400">
@@ -58,55 +58,51 @@ const MyRequest = () => {
           </thead>
           <tbody>
             {myReq.length > 0 ? (
-              myReq.map((food) =>
-                food.email === user?.email ? (
-                  <tr
-                    key={food.id}
-                    className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
+              myReq.map((food) => (
+                <tr
+                  key={food.id}
+                  className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
+                >
+                  <th
+                    scope="row"
+                    className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                   >
-                    <th
-                      scope="row"
-                      className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                    <div className="btn btn-ghost btn-circle avatar">
+                      <img
+                        referrerPolicy="no-referrer"
+                        className="w-10 h-10 rounded-full hover:ring-4"
+                        src={food?.foodImage}
+                        alt={food?.foodName}
+                      />
+                    </div>
+                  </th>
+                  <td className="px-6 py-4">{food?.foodName}</td>
+                  <td className="px-6 py-4">{food?.donatorEmail}</td>
+                  <td className="px-6 py-4">{food?.foodQuantity}</td>
+                  <td className="px-6 py-4">
+                    {new Date(food?.expiredDateTime).toLocaleDateString()}
+                  </td>
+                  <td className="px-6 py-4">{food?.pickupLocation}</td>
+                  <td className="flex items-center px-6 py-4">
+                    <Link
+                      to={`/edit-request/${food.id}`}
+                      className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
                     >
-                      <div className="btn btn-ghost btn-circle avatar">
-                        <img
-                          referrerPolicy="no-referrer"
-                          className="w-10 h-10 rounded-full hover:ring-4"
-                          src={food?.foodImage}
-                          alt={food?.foodName}
-                        />
-                      </div>
-                    </th>
-                    <td className="px-6 py-4">{food?.foodName}</td>
-                    <td className="px-6 py-4">{food?.donatorEmail}</td>
-                    <td className="px-6 py-4">{food?.foodQuantity}</td>
-                    <td className="px-6 py-4">
-                      {new Date(food?.expiredDateTime).toLocaleDateString()}
-                    </td>
-                    <td className="px-6 py-4">{food?.pickupLocation}</td>
-                    <td className="flex items-center px-6 py-4">
-                      <Link
-                        to={`/edit-request/${food.id}`}
-                        className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-                      >
-                        Edit
-                      </Link>
-                      <button
-                        className="font-medium text-red-600 dark:text-red-500 hover:underline ms-3"
-                        onClick={() => handleRemoveRequest(food.id)}
-                      >
-                        Remove
-                      </button>
-                    </td>
-                  </tr>
-                ) : (
-                  null
-                )
-              )
+                      Edit
+                    </Link>
+                    <button
+                      className="font-medium text-red-600 dark:text-red-500 hover:underline ms-3"
+                      onClick={() => handleRemoveRequest(food.id)}
+                    >
+                      Remove
+                    </button>
+                  </td>
+                </tr>
+              ))
             ) : (
               <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                 <td
-                  colSpan="6"
+                  colSpan="7"
                   className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white text-center"
                 >
                   You haven't added any requested food yet!

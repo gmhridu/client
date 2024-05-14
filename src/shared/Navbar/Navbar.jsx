@@ -49,6 +49,14 @@ const Navbar = () => {
               My Foods
             </NavLink>
           )}
+          {user && (
+            <NavLink
+              className={({ isActive }) => (isActive ? "text-blue-400" : "")}
+              to={"/available-food"}
+            >
+              Available Food
+            </NavLink>
+          )}
 
           {user && (
             <NavLink
@@ -110,6 +118,15 @@ const Navbar = () => {
               >
                 <li>
                   <Link
+                    to={"/"}
+                    onClick={handleLinkClick}
+                    className="justify-between"
+                  >
+                    Home
+                  </Link>
+                </li>
+                <li>
+                  <Link
                     to={"/add-food"}
                     onClick={handleLinkClick}
                     className="justify-between"
@@ -123,8 +140,31 @@ const Navbar = () => {
                   </Link>
                 </li>
                 <li>
+                  <Link to={"/available-food"} onClick={handleLinkClick}>
+                    Available Food
+                  </Link>
+                </li>
+                <li>
                   <Link to={`/my-requests`} onClick={handleLinkClick}>
                     My Food Request
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to={"/about"}
+                    onClick={handleLinkClick}
+                    className="justify-between"
+                  >
+                    About Us
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to={"/contact"}
+                    onClick={handleLinkClick}
+                    className="justify-between"
+                  >
+                    Contact Us
                   </Link>
                 </li>
                 <li className="mt-2">

@@ -9,6 +9,7 @@ import AddFood from "../pages/AddFood/AddFood";
 import FoodDetails from "../components/FoodDetails/FoodDetails";
 import MyFood from "../pages/MyFood/MyFood";
 import MyRequest from "../pages/MyRequest/MyRequest";
+import AvailableFood from "../pages/AvailableFood/AvailableFood";
 
 const router = createBrowserRouter([
   {
@@ -34,6 +35,10 @@ const router = createBrowserRouter([
       {
         path: "/add-food",
         element: <AddFood/>,
+      },
+      {
+        path: "/available-food",
+        element: <AvailableFood/>,
       },
       {
         path: '/food/:id',

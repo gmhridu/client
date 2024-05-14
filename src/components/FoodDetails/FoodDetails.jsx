@@ -17,34 +17,36 @@ const FoodDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  const fetchFoodDetails = async () => {
+  const fetchFoodDetails = async (id) => {
     const { data } = await axios.get(
       `${import.meta.env.VITE_API_URL}/foods/${id}`
     );
     return data;
-  }
+  };
 
-  const {
-    data: food = {},
-    isLoading,
-    isError,
-  } = useQuery({
-    queryKey: ["foods", id],
-    queryFn: fetchFoodDetails,
-    refetchOnWindowFocus: false,
-    refetchOnMount: false,
-    refetchOnReconnect: false,
-    refetchOnRevalidate: false,
-    staleTime: 1000 * 60 * 60,
-    cacheTime: 1000 * 60 * 60,
-    retry: 3,
-    retryDelay: 1000,
-    retryOnMount: true,
-    retryOnWindowFocus: true,
-    retryOnReconnect: true,
-    retryOnRevalidate: true,
-  });
-
+ const {
+   data: food = {},
+   isLoading,
+   isError,
+ } = useQuery({
+   queryKey: ["foods", id],
+   queryFn: () => fetchFoodDetails(id),
+   config: {
+     refetchOnWindowFocus: false,
+     refetchOnMount: false,
+     refetchOnReconnect: false,
+     refetchOnRevalidate: false,
+     staleTime: 1000 * 60 * 60,
+     cacheTime: 1000 * 60 * 60,
+     retry: 3,
+     retryDelay: 1000,
+     retryOnMount: true,
+     retryOnWindowFocus: true,
+     retryOnReconnect: true,
+     retryOnRevalidate: true,
+   },
+ });
+  
   const {
     _id,
     foodImage,
@@ -59,6 +61,24 @@ const FoodDetails = () => {
     donator: { name, image, email } = {},
   } = food || {};
 
+  
+  
+  const requestFoodMutation = useMutation({
+    mutationFn: async (requestData) => {
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_API_URL}/requests`,
+        requestData
+      );
+      return data;
+    },
+    onSuccess: () => {
+      toast.success("Your food request has been submitted successfully!");
+      navigate('/my-requests')
+    },
+    onError: () => {
+      toast.error("Something is wrong! Please try again later");
+    },
+  });
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
@@ -77,8 +97,10 @@ const FoodDetails = () => {
     const additionalNotes = form.additionalNotes.value;
     const email = user?.email;
     const donatorEmail = food.donator?.email;
+    const foodId = food._id;
 
     const reqData = {
+      foodId,
       foodImage,
       foodName,
       foodStatus,
@@ -91,22 +113,21 @@ const FoodDetails = () => {
       donatorEmail,
     };
 
-    try {
-      const { data } = await axios.post(
-        `${import.meta.env.VITE_API_URL}/requests`,
-        reqData
-      );
-      toast.success("Your food request has been submitted successfully!");
-      navigate("/my-requests");
-    } catch (error) {
-      toast.error(error?.message);
-      e.target.reset();
-    }
+    requestFoodMutation.mutate(reqData, {
+      onSuccess: () => {
+        toast.success("Your food request has been submitted successfully!");
+        queryClient.invalidateQueries(["availableFoods"]);
+        queryClient.invalidateQueries(["foods", id]);
+        navigate("/my-requests");
+      },
+      onError: () => {
+        toast.error("Something went wrong! Please try again later.");
+      },
+    });
   };
 
   if (isLoading) return <Loader />;
-  if (isError) return <Error/>;
-
+  if (isError) return <Error />;
   return (
     <div className="flex flex-col md:flex-row  items-center justify-around my-10 px-6 gap-5 md:max-w-screen-2xl mx-auto">
       <div className="overflow-hidden bg-white rounded-lg shadow-md dark:bg-gray-800 max-w-2xl">

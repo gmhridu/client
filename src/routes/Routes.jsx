@@ -10,6 +10,7 @@ import FoodDetails from "../components/FoodDetails/FoodDetails";
 import MyFood from "../pages/MyFood/MyFood";
 import MyRequest from "../pages/MyRequest/MyRequest";
 import AvailableFood from "../pages/AvailableFood/AvailableFood";
+import PrivateRoutes from "./PrivateRoutes/PrivateRoutes";
 
 const router = createBrowserRouter([
   {
@@ -30,34 +31,56 @@ const router = createBrowserRouter([
       },
       {
         path: "/my-foods",
-        element: <MyFood/>,
+        element: (
+          <PrivateRoutes>
+            <MyFood />
+          </PrivateRoutes>
+        ),
       },
       {
         path: "/add-food",
-        element: <AddFood/>,
+        element: (
+          <PrivateRoutes>
+            <AddFood />
+          </PrivateRoutes>
+        ),
       },
       {
         path: "/available-food",
-        element: <AvailableFood/>,
+        element: (
+          <PrivateRoutes>
+            <AvailableFood />
+          </PrivateRoutes>
+        ),
       },
       {
-        path: '/food/:id',
-        element: <FoodDetails />,
+        path: "/food/:id",
+        element: (
+          <PrivateRoutes>
+            <FoodDetails />
+          </PrivateRoutes>
+        ),
         loader: ({ params }) =>
-           fetch(`${import.meta.env.VITE_API_URL}/foods/${params.id}`).then(response => response.json()),
+          fetch(`${import.meta.env.VITE_API_URL}/foods/${params.id}`).then(
+            (response) => response.json()
+          ),
       },
       {
-        path: '/my-requests',
-        element: <MyRequest/>
+        path: "/my-requests",
+        element: (
+          <PrivateRoutes>
+            <MyRequest />
+          </PrivateRoutes>
+        ),
       },
       {
-        path: '/login',
-        element: <Login/>,
+        path: "/login",
+        element: <Login />,
       },
       {
-        path: '/register',
-        element: <Register/>,
-      }
+        path: "/register",
+        element: <Register />,
+      },
     ],
   },
   {

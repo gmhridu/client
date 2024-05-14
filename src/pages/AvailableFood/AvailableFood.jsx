@@ -6,10 +6,13 @@ import Loader from "../../shared/Loader/Loader";
 import Error from "../Error/Error";
 import FoodCard from "../../components/FoodCard/FoodCard";
 import useRequestFood from "../../hooks/useRequestFood";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
 
+
+const axiosSecure = useAxiosSecure()
 const fetchAvailableFoods = async () => {
   try {
-    const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/foods`);
+    const { data } = await axiosSecure.get(`/foods`);
     const availableFoods = data.filter(
       (food) => food.foodStatus === "Available"
     );
@@ -20,6 +23,7 @@ const fetchAvailableFoods = async () => {
 };
 
 const AvailableFood = () => {
+  
   const { user } = useAuth();
   const queryClient = useQueryClient();
   const requestFoodMutation = useRequestFood();

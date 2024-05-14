@@ -1,17 +1,20 @@
 import React, { useEffect, useState } from "react";
 import loginImg from "../../assets/illustration.svg";
 
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { IoIosEye, IoMdEyeOff } from "react-icons/io";
 import useAuth from "../../hooks/useAuth";
 import toast from "react-hot-toast";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const { signIn, signInWithGoogle, user, loading } = useAuth()
   const navigate = useNavigate()
+  const location = useLocation()
+  const axiosSecure = useAxiosSecure();
 
-
+  const from = location.state || '/';
 
   const handleShowPassword = () => {
     setShowPassword(!showPassword);
@@ -21,9 +24,13 @@ const Login = () => {
   const handleGoogleSignIn = async() => {
     try {
       const result = await signInWithGoogle()
-      console.log(result?.user)
+      const { data } = await axiosSecure.post('/jwt', {
+        email: result?.user?.email,
+        name: result?.user?.displayName,
+        photo: result?.user?.photoURL
+      })
       toast.success('Sign in Successfully')
-      navigate('/')
+      navigate(from, {replace: true})
     } catch (err) {
       toast.error(err?.message)
       console.log(err.message)
@@ -41,15 +48,19 @@ const Login = () => {
     }
     try {
       const result = await signIn(email, password)
-      console.log(result?.user)
+      const { data } = await axiosSecure.post('/jwt', {
+        email: result?.user?.email,
+        name: result?.user?.displayName,
+        photo: result?.user?.photoURL
+      })
+      navigate(from, { replace: true });
       toast.success('Sign in Successfully')
-      navigate('/')
     } catch (err) {
       toast.error(err?.message)
       console.log(err.message)
     }
   }
-  if(user || loading) return
+  if (user || loading) return;
   return (
     <section className="dark:bg-gray-900 my-20">
       <div className="flex items-center justify-center container mx-auto">

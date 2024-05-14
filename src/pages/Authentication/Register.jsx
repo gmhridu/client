@@ -5,6 +5,8 @@ import { IoIosEye } from "react-icons/io";
 import { IoMdEyeOff } from "react-icons/io";
 import useAuth from "../../hooks/useAuth";
 import toast from 'react-hot-toast'
+import useAxiosSecure from "../../hooks/useAxiosSecure";
+import axios from "axios";
 
 const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -12,6 +14,7 @@ const Register = () => {
   const [passwordMatch, setPasswordMatch] = useState(true);
   const navigate = useNavigate();
   const location = useLocation();
+  const axiosSecure = useAxiosSecure()
   const {
     signInWithGoogle,
     createUser,
@@ -20,6 +23,8 @@ const Register = () => {
     setUser,
     loading,
   } = useAuth();
+
+  const from = location.state || "login"
 
   const handleShowPassword = () => {
     setShowPassword(!showPassword);
@@ -33,13 +38,15 @@ const Register = () => {
   const handleGoogleSignIn = async () => {
     try {
       const result = await signInWithGoogle();
+      const { data } = await axiosSecure.post("jwt", {
+        email: result?.user?.email,
+      });
       const user = result?.user;
       if (user) {
        setUser(user);
-       
      }
      toast.success("Account registered successfully");
-     navigate("/login");
+     navigate(from, {replace: true});
     } catch (error) {
      console.log(error);
       toast.error('Something is wrong please try again')
@@ -67,9 +74,17 @@ const Register = () => {
    try {
     const result = await createUser(email, password)
     await updateUserProfile(name, photo);
-    setUser({ ...result?.user, photoURL: photo, displayName: name });
+     setUser({ ...result?.user, photoURL: photo, displayName: name });
+     const { data } = await axiosSecure.post(
+       `/jwt`,
+       { email: result?.user?.email },
+       {
+         withCredentials: true,
+       }
+     );
+     console.log(data);
     toast.success('Account registered successfully')
-    navigate('/login');
+    navigate(from, {replace: true});
    } catch (error) {
     console.log(error);
     toast.error('Something is wrong please try again')

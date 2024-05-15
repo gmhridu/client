@@ -10,7 +10,6 @@ import {
 import React, { createContext, useEffect, useState } from "react";
 import auth from "../firebase/firebase.config";
 import useAxiosSecure from '../hooks/useAxiosSecure'
-import toast from "react-hot-toast";
 
 
 
@@ -40,7 +39,7 @@ const AuthProvider = ({ children }) => {
 const logOut = async () => {
   try {
     setLoading(true);
-    await axiosSecure.get(`/logout`, {
+    await axiosSecure.post(`/logout`, {
       withCredentials: true,
     });
     await signOut(auth);

@@ -38,7 +38,7 @@ const Register = () => {
   const handleGoogleSignIn = async () => {
     try {
       const result = await signInWithGoogle();
-      const { data } = await axiosSecure.post("jwt", {
+      const { data } = await axiosSecure.post(`/jwt`, {
         email: result?.user?.email,
       });
       const user = result?.user;
@@ -75,13 +75,10 @@ const Register = () => {
     const result = await createUser(email, password)
     await updateUserProfile(name, photo);
      setUser({ ...result?.user, photoURL: photo, displayName: name });
-     const { data } = await axiosSecure.post(
-       `/jwt`,
-       { email: result?.user?.email },
-       {
-         withCredentials: true,
-       }
-     );
+     const { data } = await axiosSecure.post(`/jwt`, {
+       email: result?.user?.email,
+       withCredentials: true,
+     });
      console.log(data);
     toast.success('Account registered successfully')
     navigate(from, {replace: true});

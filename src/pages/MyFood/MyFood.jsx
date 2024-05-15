@@ -32,7 +32,9 @@ if (!user) return;
 
 const userEmail = user?.email;
 
-const { data } = await axiosSecure.get(`/foods/my-food/${userEmail}`);
+const { data } = await axiosSecure.get(
+  `/foods/my-food/${userEmail}`
+);
 return data;
 };
 
@@ -48,7 +50,9 @@ enabled: !!user,
 
 const deleteFoodMutation = useMutation({
 mutationFn: async (foodId) => {
-  const { data } = await axiosSecure.delete(`/foods/${foodId}`);
+  const { data } = await axiosSecure.delete(
+    `/foods/${foodId}`
+  );
   return data;
 },
 onSuccess: () => {
@@ -64,7 +68,10 @@ onError: () => {
 
 const updateMutation = useMutation({
 mutationFn: async ({ foodId, updates }) => {
-  const { data } = await axiosSecure.put(`/foods/${foodId}`, updates);
+  const { data } = await axiosSecure.put(
+    `/foods/${foodId}`,
+    updates
+  );
   return data;
 },
 onSuccess: () => {

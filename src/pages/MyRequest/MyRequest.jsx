@@ -4,6 +4,7 @@ import useAuth from "../../hooks/useAuth";
 import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import Loader from "../../shared/Loader/Loader";
+import Error from "../Error/Error";
 
 const MyRequest = () => {
 const axiosSecure = useAxiosSecure()
@@ -21,15 +22,14 @@ return [];
 }
 };
 
-const { data: myReq = [], isLoading } = useQuery({
+const { data: myReq = [], isLoading, isError } = useQuery({
 queryKey: ["myReq", user?.email],
 queryFn: getMyFood,
 enabled: !!user?.email,
 });
 
-console.log(myReq);
-
   if (isLoading) return <Loader />;
+  if (isError) return <Error />;
 return (
 <div className="my-10 min-h-[calc(100vh-320px)]">
 <div className="relative overflow-x-auto px-2 md:px-6 sm:rounded-lg">

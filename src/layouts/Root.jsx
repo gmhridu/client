@@ -7,7 +7,9 @@ const Root = () => {
  return (
    <div className="font-merriWeather">
      <Navbar />
-     <Outlet />
+     <div className='min-h-[calc(100vh-242px)]'>
+       <Outlet />
+    </div>
      <Footer />
    </div>
  );

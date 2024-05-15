@@ -5,11 +5,28 @@ import toast from 'react-hot-toast';
 import useAuth from './useAuth';
 
 const axiosSecure = axios.create({
- baseURL: import.meta.env.VITE_API_URL,
- withCredentials: true,
+  baseURL: import.meta.env.VITE_API_URL,
+  withCredentials: true,
 });
 
 const useAxiosSecure = () => {
+  axiosSecure.interceptors.request.use(
+    (config) => {
+      console.log('Sending request with config:', config)
+      const token = document.cookie
+        .split("; ")
+        .find((row) => row.startsWith("token="));
+      if (token) {
+        const tokenValue = token.split("=")[1];
+        config.headers.Authorization = `Bearer ${tokenValue}`;
+      }
+      return config;
+    },
+    (error) => {
+      return Promise.reject(error);
+    }
+  );
+
   
   axiosSecure.interceptors.response.use(
     (response) => {

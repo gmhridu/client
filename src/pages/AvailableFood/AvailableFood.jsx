@@ -1,5 +1,4 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import axios from "axios";
 import React, { useState } from "react";
 import useAuth from "../../hooks/useAuth";
 import Loader from "../../shared/Loader/Loader";

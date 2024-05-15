@@ -24,10 +24,8 @@ const Login = () => {
   const handleGoogleSignIn = async() => {
     try {
       const result = await signInWithGoogle()
-      const { data } = await axiosSecure.post('/jwt', {
+      const { data } = await axiosSecure.post(`/jwt`, {
         email: result?.user?.email,
-        name: result?.user?.displayName,
-        photo: result?.user?.photoURL
       })
       toast.success('Sign in Successfully')
       navigate(from, {replace: true})
@@ -48,11 +46,9 @@ const Login = () => {
     }
     try {
       const result = await signIn(email, password)
-      const { data } = await axiosSecure.post('/jwt', {
+      const { data } = await axiosSecure.post(`/jwt`, {
         email: result?.user?.email,
-        name: result?.user?.displayName,
-        photo: result?.user?.photoURL
-      })
+      });
       navigate(from, { replace: true });
       toast.success('Sign in Successfully')
     } catch (err) {

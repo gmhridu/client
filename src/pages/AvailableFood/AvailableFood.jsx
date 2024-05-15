@@ -23,13 +23,16 @@ const fetchAvailableFoods = async () => {
 
 const AvailableFood = () => {
   
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
   const queryClient = useQueryClient();
   const requestFoodMutation = useRequestFood();
   const [requestedQuantity, setRequestedQuantity] = useState(1);
 
   const {
     isLoading,
+    isLoadingError,
+    isFetching,
+    isFetched,
     data: availableFoods = [],
     isError,
   } = useQuery({
@@ -50,38 +53,40 @@ const AvailableFood = () => {
     }
   };
 
-  if (isLoading) return <Loader />;
-  if (isError) return <Error />;
+  if (isLoading || loading || isFetching) return <Loader />;
+  if (isError || isLoadingError) return <Error />;
 
-  return (
-    <div className="container px-6 py-10 mx-auto">
-      <h1 className="text-2xl font-bold">
-        Available Foods: {availableFoods.length}
-      </h1>
-      <div className="grid grid-cols-1 gap-8 mt-8 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        {availableFoods.map((food) => (
-          <FoodCard key={food._id} food={food}>
-            <div className="flex items-center mt-4">
-              <input
-                type="number"
-                min="1"
-                max={food.foodQuantity}
-                value={requestedQuantity}
-                onChange={(e) => setRequestedQuantity(Number(e.target.value))}
-                className="w-16 px-2 py-1 mr-2 border rounded-md"
-              />
-              <button
-                onClick={() => handleRequestFood(food._id, requestedQuantity)}
-                className="px-4 py-2 text-white bg-blue-600 rounded-md"
-              >
-                Request
-              </button>
-            </div>
-          </FoodCard>
-        ))}
+  if (isFetched) {
+    return (
+      <div className="container px-6 py-10 mx-auto">
+        <h1 className="text-2xl font-bold">
+          Available Foods: {availableFoods.length}
+        </h1>
+        <div className="grid grid-cols-1 gap-8 mt-8 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          {availableFoods.map((food) => (
+            <FoodCard key={food._id} food={food}>
+              <div className="flex items-center mt-4">
+                <input
+                  type="number"
+                  min="1"
+                  max={food.foodQuantity}
+                  value={requestedQuantity}
+                  onChange={(e) => setRequestedQuantity(Number(e.target.value))}
+                  className="w-16 px-2 py-1 mr-2 border rounded-md"
+                />
+                <button
+                  onClick={() => handleRequestFood(food._id, requestedQuantity)}
+                  className="px-4 py-2 text-white bg-blue-600 rounded-md"
+                >
+                  Request
+                </button>
+              </div>
+            </FoodCard>
+          ))}
+        </div>
       </div>
-    </div>
-  );
+    );
+  }
 };
 
 export default AvailableFood;

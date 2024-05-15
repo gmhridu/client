@@ -4,10 +4,11 @@ import { Link, NavLink, useParams } from "react-router-dom";
 import logo from "/logo.jpeg";
 import useAuth from "../../hooks/useAuth";
 import toast from "react-hot-toast";
+import Loader from "../Loader/Loader";
 
 const Navbar = () => {
   const [dropdown, setDropDown] = useState(false);
-  const { user, logOut } = useAuth();
+  const { user, logOut, loading } = useAuth();
 
   const toggleDropDown = () => {
     setDropDown((isOpen) => !isOpen);
@@ -26,6 +27,8 @@ const Navbar = () => {
     toast.success("Logged out successfully");
     setDropDown(false);
   };
+
+  if(loading) return <Loader/>
 
   return (
     <div className="navbar bg-base-100 flex justify-between items-center px-2 md:px-6 py-2">

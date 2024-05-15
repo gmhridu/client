@@ -6,7 +6,6 @@ import { IoMdEyeOff } from "react-icons/io";
 import useAuth from "../../hooks/useAuth";
 import toast from 'react-hot-toast'
 import useAxiosSecure from "../../hooks/useAxiosSecure";
-import axios from "axios";
 
 const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -24,7 +23,7 @@ const Register = () => {
     loading,
   } = useAuth();
 
-  const from = location.state || "login"
+  const from = location?.state || "/login"
 
   const handleShowPassword = () => {
     setShowPassword(!showPassword);
@@ -63,7 +62,6 @@ const Register = () => {
     const confirmPassword = form.confirmPassword.value;
     const remember = form.remember.checked;
     const registerData = {name, email, photo, password, confirmPassword, remember };
-    console.log(registerData);
 
     if (password !== confirmPassword) {
       setPasswordMatch(false);

@@ -39,7 +39,7 @@ const AuthProvider = ({ children }) => {
 const logOut = async () => {
   try {
     setLoading(true);
-    await axiosSecure.post(`/logout`, {
+    await axiosSecure.get(`/logout`, {
       withCredentials: true,
     });
     await signOut(auth);

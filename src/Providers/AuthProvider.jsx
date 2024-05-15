@@ -36,19 +36,18 @@ const AuthProvider = ({ children }) => {
    return signInWithPopup(auth, googleProvider);
  };
 
-const logOut = async () => {
-  try {
-    setLoading(true);
-    await axiosSecure.get(`/logout`, {
-      withCredentials: true,
-    });
-    await signOut(auth);
-  } catch (error) {
-    console.error("Error logging out:", error);
-  } finally {
-    setLoading(false);
-  }
-};
+ const logOut = async () => {
+   try {
+     setLoading(true);
+     await axiosSecure.post(`/logout`, {}, { withCredentials: true });
+     await signOut(auth);
+     setUser(null);
+   } catch (error) {
+     console.error("Error logging out:", error);
+   } finally {
+     setLoading(false);
+   }
+ };
 
  const updateUserProfile = (name, photo) => {
    return updateProfile(auth.currentUser, {
